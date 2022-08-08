@@ -5,6 +5,7 @@
       :class="event"
       :key="event.id"
       :event="event"
+      @click="showDetails(event.id)"
     />
   </div>
 </template>
@@ -23,17 +24,21 @@ export default {
       events: null,
     };
   },
+  props: ["page", "perPage"],
   created() {
-    EventService.getEvents()
-      // .get(
-      //   'https://my-json-server.typicode.com/Code-Pop/Real-World_Vue-3/events'
-      // )
+    console.log(this.page, this.perPage);
+    EventService.getEvents(this.page, this.perPage)
       .then((response) => {
         this.events = response.data;
       })
       .catch((error) => {
         console.log(error);
       });
+  },
+  methods: {
+    showDetails: function (eventId) {
+      this.$router.replace({ name: "EventDetails", params: { id: eventId } });
+    },
   },
 };
 </script>
