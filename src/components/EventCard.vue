@@ -1,17 +1,25 @@
 <template>
+<router-link
+    class="event-link"
+    :to="{ name: 'EventDetails', params: { id: event.id } }"
+  >
   <div class="event-card">
     <span>@{{ event.time }} on {{ event.date }}</span>
     <h4>{{ event.title }}</h4>
   </div>
+  </router-link>
 </template>
 
 <script>
 export default {
-  name: "EventCard",
+  name: 'EventCard',
   props: {
-    event: Object,
-  },
-};
+    event: {
+      type: Object,
+      required: true
+    }
+  }
+}
 </script>
 
 <style scoped>

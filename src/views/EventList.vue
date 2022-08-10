@@ -5,7 +5,6 @@
       :class="event"
       :key="event.id"
       :event="event"
-      @click="showDetails(event.id)"
     />
     <router-link :to="{ name: 'EventList', query: { page: 1 } }"
       >&lt;&lt;</router-link
@@ -20,51 +19,39 @@
 
 <script>
 // @ is an alias to /src
-import EventCard from "@/components/EventCard.vue";
-import EventService from "@/services/EventService.js";
+import EventCard from '@/components/EventCard.vue'
+import EventService from '@/services/EventService.js'
 export default {
-  name: "EventList",
+  name: 'EventList',
   components: {
-    EventCard, // register it as a child component
+    EventCard // register it as a child component
   },
-  data() {
+  data () {
     return {
       events: null,
-      totalCount: 0,
-    };
+      totalCount: 0
+    }
   },
-  props: ["page", "perPage"],
+  props: ['page', 'perPage'],
   watch: {
     page: {
       immediate: true,
       handler: function (n, o) {
         EventService.getEvents(this.page, this.perPage)
           .then((response) => {
-            this.events = response.data;
-            this.totalCount = response.headers["x-total-count"];
+            this.events = response.data
+            this.totalCount = response.headers['x-total-count']
           })
           .catch((error) => {
-            console.log(error);
-          });
-      },
-    },
+            console.log(error)
+          })
+      }
+    }
   },
-  created() {
-    // console.log(this.page, this.perPage);
-    // EventService.getEvents(this.page, this.perPage)
-    //   .then((response) => {
-    //     this.events = response.data;
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-  },
+  created () {},
   methods: {
-    showDetails: function (eventId) {
-      this.$router.replace({ name: "EventDetails", params: { id: eventId } });
-    },
-  },
-};
+  }
+}
 </script>
 <style scoped>
 .event {
