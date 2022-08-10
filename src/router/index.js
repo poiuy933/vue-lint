@@ -25,7 +25,7 @@ const routes = [
       import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
   },
   {
-    path: '/event/:id',
+    path: '/events/:id',
     name: 'EventLayout',
     props: true,
     component: EventLayout,
@@ -43,6 +43,12 @@ const routes = [
       name: 'EventEdit',
       component: EventEdit
     }]
+  },
+  {
+    path: '/event/:afterEvent(.*)',
+    redirect: to => {
+      return { path: '/events/' + to.params.afterEvent }
+    }
   }
 ]
 
