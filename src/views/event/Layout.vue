@@ -27,6 +27,11 @@ export default {
       })
       .catch((error) => {
         console.log(error)
+        if (error.response.status === 404) {
+          this.$router.replace({ name: '404Resource', params: { resource: 'event' } })
+        } else {
+          this.$router.replace({ name: 'NetworkError' })
+        }
       })
   }
 }
