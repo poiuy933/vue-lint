@@ -1,5 +1,4 @@
 <template>
-  <div id="app">
     <div id="flash-message" v-if="GStore.flashMessage">
       {{GStore.flashMessage}}
     </div>
@@ -8,7 +7,6 @@
       <router-link :to="{ name: 'About' }">About</router-link>
     </nav>
     <router-view />
-  </div>
 </template>
 
 <script>

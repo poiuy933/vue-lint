@@ -21,6 +21,7 @@
 // @ is an alias to /src
 import EventCard from '@/components/EventCard.vue'
 import EventService from '@/services/EventService.js'
+import NProgress from 'nprogress'
 export default {
   name: 'EventList',
   components: {
@@ -33,20 +34,37 @@ export default {
     }
   },
   props: ['page', 'perPage'],
-  watch: {
-    page: {
-      immediate: true,
-      handler: function (n, o) {
-        EventService.getEvents(this.page, this.perPage)
-          .then((response) => {
-            this.events = response.data
-            this.totalCount = response.headers['x-total-count']
-          })
-          .catch((error) => {
-            console.log(error)
-          })
-      }
-    }
+  // watch: {
+  //   page: {
+  //     immediate: true,
+  //     handler: function (n, o) {
+  //       EventService.getEvents(this.page, this.perPage)
+  //         .then((response) => {
+  //           this.events = response.data
+  //           this.totalCount = response.headers['x-total-count']
+  //         })
+  //         .catch((error) => {
+  //            this.$router.push({ name: 'NetworkError'})
+  //         })
+  //     }
+  //   }
+  // },
+  beforeRouteEnter (routeTo, routeFrom, next) {
+    // in this hook, "this" is not accessible, so using comp in next() instead
+    NProgress.start()
+    EventService.getEvents(parseInt(routeTo.query.page), 2)
+      .then((response) => {
+        next(comp => {
+          comp.events = response.data
+          comp.totalCount = response.headers['x-total-count']
+        })
+      })
+      .catch(() => {
+        next({ name: 'NetworkError' })
+      })
+      .finally(() => {
+        NProgress.done()
+      })
   },
   created () {},
   methods: {
